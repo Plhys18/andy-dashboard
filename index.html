@@ -159,8 +159,8 @@
   <div class="stat-grid">
     <div class="stat-card">
       <div class="stat-label">Portfolio Value</div>
-      <div class="stat-value gold">$4,812</div>
-      <div class="stat-sub up">▲ +$143 today (+3.1%)</div>
+      <div class="stat-value gold" id="portfolio-value">$4,812</div>
+      <div id="portfolio-change"><div class="stat-sub up">▲ +$143 today (+3.1%)</div></div>
     </div>
     <div class="stat-card">
       <div class="stat-label">Active Nodes</div>
@@ -184,7 +184,7 @@
 <div class="section">
   <div class="section-title">Portfolio <span class="mock-badge">mocked</span></div>
   <div class="table-card">
-    <table>
+    <table id="portfolio-table">
       <thead>
         <tr>
           <th>Asset</th>
@@ -215,13 +215,6 @@
           <td>5.5</td>
           <td><strong>$704</strong></td>
           <td><span class="badge badge-down">-0.9%</span></td>
-        </tr>
-        <tr>
-          <td><span class="token-name">Monad</span><span class="token-sym">MON</span></td>
-          <td>$3.12</td>
-          <td>210</td>
-          <td><strong>$655</strong></td>
-          <td><span class="badge badge-up">+8.2%</span></td>
         </tr>
         <tr>
           <td><span class="token-name">USDC</span><span class="token-sym">USDC</span></td>
@@ -311,10 +304,129 @@
 </footer>
 
 <script>
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CONFIGURATION
+  // ═══════════════════════════════════════════════════════════════════════════
+  const WALLET_ADDRESS = '0xd593c661b340b811770f01868a1f6e001d495afb';
+
+  // Your holdings (will be replaced with on-chain data later)
+  const HOLDINGS = {
+    'bitcoin': 0.022,
+    'ethereum': 0.85,
+    'solana': 5.5,
+    'usd-coin': 269
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LIVE PRICE FETCHING
+  // ═══════════════════════════════════════════════════════════════════════════
+  async function fetchPrices() {
+    try {
+      const ids = Object.keys(HOLDINGS).join(',');
+      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Failed to fetch prices:', error);
+      return null;
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UPDATE UI
+  // ═══════════════════════════════════════════════════════════════════════════
+  function formatCurrency(value) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+  }
+
+  function formatPrice(value) {
+    if (value >= 1000) return formatCurrency(value);
+    if (value >= 1) return '$' + value.toFixed(2);
+    return '$' + value.toFixed(4);
+  }
+
+  function formatPercent(value) {
+    const sign = value >= 0 ? '+' : '';
+    return sign + value.toFixed(1) + '%';
+  }
+
+  async function updatePortfolio() {
+    const prices = await fetchPrices();
+    if (!prices) {
+      console.warn('Using fallback prices');
+      return;
+    }
+
+    let totalValue = 0;
+    let totalChange24h = 0;
+
+    const tokenMap = {
+      'bitcoin': { name: 'Bitcoin', symbol: 'BTC', row: 0 },
+      'ethereum': { name: 'Ethereum', symbol: 'ETH', row: 1 },
+      'solana': { name: 'Solana', symbol: 'SOL', row: 2 },
+      'usd-coin': { name: 'USDC', symbol: 'USDC', row: 3 }
+    };
+
+    const tbody = document.querySelector('#portfolio-table tbody');
+
+    Object.entries(HOLDINGS).forEach(([coinId, amount]) => {
+      const priceData = prices[coinId];
+      if (!priceData) return;
+
+      const price = priceData.usd;
+      const change24h = priceData.usd_24h_change || 0;
+      const value = price * amount;
+
+      totalValue += value;
+      totalChange24h += (value * change24h / 100);
+
+      const token = tokenMap[coinId];
+      if (!token) return;
+
+      const row = tbody.rows[token.row];
+      if (!row) return;
+
+      // Update price
+      row.cells[1].textContent = formatPrice(price);
+
+      // Update holdings
+      row.cells[2].textContent = amount < 1 ? amount.toFixed(4) : amount.toFixed(2);
+
+      // Update value
+      row.cells[3].innerHTML = '<strong>' + formatCurrency(value) + '</strong>';
+
+      // Update 24h change
+      const badgeClass = change24h >= 0 ? 'badge-up' : 'badge-down';
+      row.cells[4].innerHTML = `<span class="badge ${badgeClass}">${formatPercent(change24h)}</span>`;
+    });
+
+    // Update overview stats
+    const portfolioChange = (totalChange24h / (totalValue - totalChange24h)) * 100;
+    document.getElementById('portfolio-value').textContent = formatCurrency(totalValue);
+
+    const changeClass = totalChange24h >= 0 ? 'up' : 'down';
+    const changeSymbol = totalChange24h >= 0 ? '▲' : '▼';
+    document.getElementById('portfolio-change').innerHTML = `<div class="stat-sub ${changeClass}">${changeSymbol} ${formatCurrency(Math.abs(totalChange24h))} today (${formatPercent(portfolioChange)})</div>`;
+
+    // Remove "mocked" badge
+    const mockBadge = document.querySelector('.section-title .mock-badge');
+    if (mockBadge) mockBadge.remove();
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INIT
+  // ═══════════════════════════════════════════════════════════════════════════
   const now = new Date();
   const fmt = d => d.toLocaleString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
   document.getElementById('ts').textContent = 'Updated ' + fmt(now);
   document.getElementById('ts2').textContent = fmt(now);
+
+  // Fetch live data
+  updatePortfolio();
+
+  // Auto-refresh every 2 minutes
+  setInterval(updatePortfolio, 120000);
 </script>
 
 </body>
