@@ -10,191 +10,312 @@
     :root {
       --bg: #0a0f0d;
       --surface: #111a14;
-      --border: rgba(255,255,255,0.08);
+      --surface2: #162019;
+      --border: rgba(255,255,255,0.07);
       --gold: #c9a84c;
       --green: #4ade80;
-      --muted: rgba(255,255,255,0.35);
+      --red: #f87171;
+      --blue: #60a5fa;
+      --muted: rgba(255,255,255,0.32);
       --text: rgba(255,255,255,0.88);
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
-      background-image: radial-gradient(ellipse 100% 40% at 50% 0%, #1a3320 0%, transparent 70%);
+      background-image: radial-gradient(ellipse 100% 35% at 50% 0%, #1a3320 0%, transparent 70%);
       color: var(--text);
       min-height: 100vh;
-      padding: 2rem 1rem 4rem;
+      padding: 1.5rem 1rem 5rem;
     }
 
+    /* ── HEADER ── */
     header {
-      max-width: 900px;
-      margin: 0 auto 2.5rem;
+      max-width: 960px;
+      margin: 0 auto 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--gold);
-      letter-spacing: -0.02em;
-      text-shadow: 0 0 20px rgba(201,168,76,0.4);
-    }
-
-    .status-dot {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      color: var(--green);
-      font-weight: 600;
-    }
-
-    .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .grid {
-      max-width: 900px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1rem;
     }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      padding: 1.25rem 1.5rem;
+    .logo { font-size: 1.5rem; font-weight: 900; color: var(--gold); letter-spacing: -0.02em; text-shadow: 0 0 20px rgba(201,168,76,0.35); }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .status-pill {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-weight: 700; color: var(--green);
+      background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2);
+      padding: 0.3rem 0.75rem; border-radius: 99px;
     }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+    .last-update { font-size: 0.7rem; color: var(--muted); }
 
-    .card-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-
-    .card-value {
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-
-    .card-sub {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.25rem;
-    }
-
-    .placeholder {
-      background: repeating-linear-gradient(
-        90deg,
-        rgba(255,255,255,0.04) 0px,
-        rgba(255,255,255,0.04) 60px,
-        transparent 60px,
-        transparent 80px
-      );
-      border-radius: 4px;
-      height: 1.6rem;
-      width: 80%;
-      margin-top: 0.25rem;
-    }
-
+    /* ── SECTION ── */
+    .section { max-width: 960px; margin: 0 auto 1rem; }
     .section-title {
-      max-width: 900px;
-      margin: 2rem auto 0.75rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.09em; color: var(--muted); margin-bottom: 0.65rem;
+      padding-left: 2px;
     }
 
-    .coming-soon {
-      max-width: 900px;
-      margin: 0 auto;
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: 1rem;
-      padding: 2rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.875rem;
+    /* ── STAT GRID ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 0.875rem; padding: 1.1rem 1.25rem;
+    }
+    .stat-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 0.4rem; }
+    .stat-value { font-size: 1.55rem; font-weight: 900; letter-spacing: -0.02em; }
+    .stat-sub { font-size: 0.73rem; color: var(--muted); margin-top: 0.2rem; }
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+    .gold { color: var(--gold); }
+
+    /* ── PORTFOLIO TABLE ── */
+    .table-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 0.875rem; overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    thead th {
+      background: rgba(255,255,255,0.04); color: var(--muted);
+      font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+      padding: 0.6rem 1rem; text-align: left;
+    }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-top: 1px solid var(--border); }
+    tbody tr:hover { background: rgba(255,255,255,0.025); }
+    td { padding: 0.75rem 1rem; }
+    td:not(:first-child) { text-align: right; }
+    .token-name { font-weight: 700; }
+    .token-sym { color: var(--muted); font-size: 0.75rem; margin-left: 4px; }
+    .badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 700;
+      padding: 0.15rem 0.5rem; border-radius: 99px;
+    }
+    .badge-up { background: rgba(74,222,128,0.15); color: var(--green); }
+    .badge-down { background: rgba(248,113,113,0.15); color: var(--red); }
+
+    /* ── NODES ── */
+    .node-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+    .node-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 0.875rem; padding: 1rem 1.25rem;
+      display: flex; flex-direction: column; gap: 0.35rem;
+    }
+    .node-header { display: flex; align-items: center; justify-content: space-between; }
+    .node-name { font-weight: 700; font-size: 0.88rem; }
+    .node-status { font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 99px; }
+    .online { background: rgba(74,222,128,0.15); color: var(--green); }
+    .offline { background: rgba(248,113,113,0.15); color: var(--red); }
+    .node-meta { font-size: 0.72rem; color: var(--muted); }
+    .node-earnings { font-size: 0.85rem; font-weight: 700; color: var(--gold); }
+
+    /* ── TASKS ── */
+    .task-list { display: flex; flex-direction: column; gap: 0; }
+    .task-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 0; padding: 0.75rem 1.25rem;
+      display: flex; align-items: center; gap: 0.75rem; font-size: 0.83rem;
+    }
+    .task-item:first-child { border-radius: 0.875rem 0.875rem 0 0; }
+    .task-item:last-child { border-radius: 0 0 0.875rem 0.875rem; }
+    .task-item:not(:first-child) { border-top: none; }
+    .task-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .task-text { flex: 1; }
+    .task-tag { font-size: 0.65rem; font-weight: 700; color: var(--muted); }
+    .prio-high { background: var(--red); }
+    .prio-med  { background: var(--gold); }
+    .prio-low  { background: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer { max-width: 960px; margin: 2.5rem auto 0; text-align: center; font-size: 0.7rem; color: var(--muted); }
+    .mock-badge {
+      display: inline-block; font-size: 0.62rem; font-weight: 700;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted); padding: 0.15rem 0.5rem; border-radius: 4px;
+      vertical-align: middle; margin-left: 4px;
     }
 
-    .coming-soon strong {
-      display: block;
-      color: var(--gold);
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    footer {
-      max-width: 900px;
-      margin: 3rem auto 0;
-      text-align: center;
-      font-size: 0.72rem;
-      color: var(--muted);
+    @media (max-width: 480px) {
+      .stat-value { font-size: 1.3rem; }
+      thead th:nth-child(3), td:nth-child(3) { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">Andy</div>
-    <div class="status-dot"><span class="dot"></span> Online</div>
-  </header>
+<header>
+  <div class="logo">Andy</div>
+  <div class="header-right">
+    <span class="last-update" id="ts"></span>
+    <div class="status-pill"><span class="dot"></span> Live</div>
+  </div>
+</header>
 
-  <div class="grid">
-    <div class="card">
-      <div class="card-label">Portfolio Value</div>
-      <div class="placeholder"></div>
-      <div class="card-sub">Wallets not yet connected</div>
+<!-- STAT ROW -->
+<div class="section">
+  <div class="section-title">Overview</div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Portfolio Value</div>
+      <div class="stat-value gold">$4,812</div>
+      <div class="stat-sub up">▲ +$143 today (+3.1%)</div>
     </div>
-    <div class="card">
-      <div class="card-label">Active Nodes</div>
-      <div class="placeholder"></div>
-      <div class="card-sub">Node monitor coming soon</div>
+    <div class="stat-card">
+      <div class="stat-label">Active Nodes</div>
+      <div class="stat-value">3 <span style="font-size:1rem;color:var(--muted)">/ 4</span></div>
+      <div class="stat-sub down">1 node offline</div>
     </div>
-    <div class="card">
-      <div class="card-label">Open Tasks</div>
-      <div class="placeholder"></div>
-      <div class="card-sub">Task sync coming soon</div>
+    <div class="stat-card">
+      <div class="stat-label">Node Earnings (MTD)</div>
+      <div class="stat-value up">$38.20</div>
+      <div class="stat-sub">Across all providers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Open Tasks</div>
+      <div class="stat-value">5</div>
+      <div class="stat-sub">2 high priority</div>
     </div>
   </div>
+</div>
 
-  <p class="section-title">Modules</p>
-
-  <div class="coming-soon">
-    <strong>Dashboard under construction</strong>
-    Andy will fill this in — ask him to build out any module from WhatsApp.
+<!-- PORTFOLIO -->
+<div class="section">
+  <div class="section-title">Portfolio <span class="mock-badge">mocked</span></div>
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Price</th>
+          <th>Holdings</th>
+          <th>Value</th>
+          <th>24h</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="token-name">Bitcoin</span><span class="token-sym">BTC</span></td>
+          <td>$83,420</td>
+          <td>0.022</td>
+          <td><strong>$1,835</strong></td>
+          <td><span class="badge badge-up">+2.4%</span></td>
+        </tr>
+        <tr>
+          <td><span class="token-name">Ethereum</span><span class="token-sym">ETH</span></td>
+          <td>$1,940</td>
+          <td>0.85</td>
+          <td><strong>$1,649</strong></td>
+          <td><span class="badge badge-up">+1.8%</span></td>
+        </tr>
+        <tr>
+          <td><span class="token-name">Solana</span><span class="token-sym">SOL</span></td>
+          <td>$128</td>
+          <td>5.5</td>
+          <td><strong>$704</strong></td>
+          <td><span class="badge badge-down">-0.9%</span></td>
+        </tr>
+        <tr>
+          <td><span class="token-name">Monad</span><span class="token-sym">MON</span></td>
+          <td>$3.12</td>
+          <td>210</td>
+          <td><strong>$655</strong></td>
+          <td><span class="badge badge-up">+8.2%</span></td>
+        </tr>
+        <tr>
+          <td><span class="token-name">USDC</span><span class="token-sym">USDC</span></td>
+          <td>$1.00</td>
+          <td>269</td>
+          <td><strong>$269</strong></td>
+          <td><span class="badge" style="background:rgba(255,255,255,0.08);color:var(--muted)">0.0%</span></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <footer>
-    Built by Andy · Last updated <span id="ts"></span>
-  </footer>
+<!-- NODES -->
+<div class="section">
+  <div class="section-title">DePIN Nodes <span class="mock-badge">mocked</span></div>
+  <div class="node-grid">
+    <div class="node-card">
+      <div class="node-header">
+        <span class="node-name">io.net #1</span>
+        <span class="node-status online">Online</span>
+      </div>
+      <div class="node-meta">Uptime: 99.2% · GPU: 4090</div>
+      <div class="node-earnings">+$18.40 MTD</div>
+    </div>
+    <div class="node-card">
+      <div class="node-header">
+        <span class="node-name">io.net #2</span>
+        <span class="node-status online">Online</span>
+      </div>
+      <div class="node-meta">Uptime: 97.8% · GPU: 3080</div>
+      <div class="node-earnings">+$11.20 MTD</div>
+    </div>
+    <div class="node-card">
+      <div class="node-header">
+        <span class="node-name">DataHaven</span>
+        <span class="node-status online">Online</span>
+      </div>
+      <div class="node-meta">Uptime: 100% · Storage node</div>
+      <div class="node-earnings">+$8.60 MTD</div>
+    </div>
+    <div class="node-card" style="opacity:0.55">
+      <div class="node-header">
+        <span class="node-name">Grass</span>
+        <span class="node-status offline">Offline</span>
+      </div>
+      <div class="node-meta">Last seen: 2h ago</div>
+      <div class="node-earnings" style="color:var(--muted)">$0.00 MTD</div>
+    </div>
+  </div>
+</div>
 
-  <script>
-    document.getElementById('ts').textContent = new Date().toLocaleDateString('en-GB', {
-      day: 'numeric', month: 'short', year: 'numeric'
-    });
-  </script>
+<!-- TASKS -->
+<div class="section">
+  <div class="section-title">Tasks <span class="mock-badge">mocked</span></div>
+  <div class="task-list">
+    <div class="task-item">
+      <span class="task-dot prio-high"></span>
+      <span class="task-text">Submit PA187 iteration 2 documentation</span>
+      <span class="task-tag">Due Mar 10</span>
+    </div>
+    <div class="task-item">
+      <span class="task-dot prio-high"></span>
+      <span class="task-text">Fix Grass node — check Docker container logs</span>
+      <span class="task-tag">Urgent</span>
+    </div>
+    <div class="task-item">
+      <span class="task-dot prio-med"></span>
+      <span class="task-text">Research Gitcoin Grants round 23 eligibility</span>
+      <span class="task-tag">This week</span>
+    </div>
+    <div class="task-item">
+      <span class="task-dot prio-med"></span>
+      <span class="task-text">Write IV130 essay 2 — adversarial attacks draft</span>
+      <span class="task-tag">Mar 14</span>
+    </div>
+    <div class="task-item">
+      <span class="task-dot prio-low"></span>
+      <span class="task-text">Set up io.net node #3 on spare machine</span>
+      <span class="task-tag">Someday</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Andy Dashboard · Data is mocked — ask Andy on WhatsApp to wire up live data · <span id="ts2"></span>
+</footer>
+
+<script>
+  const now = new Date();
+  const fmt = d => d.toLocaleString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+  document.getElementById('ts').textContent = 'Updated ' + fmt(now);
+  document.getElementById('ts2').textContent = fmt(now);
+</script>
 
 </body>
 </html>
